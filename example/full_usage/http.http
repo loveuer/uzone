@@ -1,0 +1,10 @@
+POST http://localhost:8080/api/kv/create
+Content-Type: application/json
+
+{
+  "key": "color",
+  "val": "red"
+}
+
+###
+GET http://localhost:8080/api/kv/get?key=color

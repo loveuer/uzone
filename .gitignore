@@ -1,0 +1,7 @@
+xtest
+.vscode
+.idea
+*.db
+*.sqlite
+.DS_Store
+etc
