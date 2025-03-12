@@ -9,6 +9,7 @@ import (
 	"github.com/loveuer/uzone/pkg/interfaces"
 	"github.com/loveuer/uzone/pkg/mq"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"time"
 )
 
 func init() {
@@ -37,6 +38,12 @@ func main() {
 		u.UseLogger().Info("%v", u.UseMQ().Publish(u.UseCtx(), "uzone", amqp.Publishing{
 			Body: []byte("hello world"),
 		}))
+	}))
+
+	app.With(uzone.InitAsyncFn(func(u interfaces.Uzone) {
+		time.Sleep(10 * time.Second)
+		err := u.UseMQ().Publish(u.UseCtx(), "uzone", amqp.Publishing{Body: []byte("hello uzone")})
+		u.UseLogger().Info("publish mq msg: %v", err)
 	}))
 
 	app.With(uzone.InitAsyncFn(func(u interfaces.Uzone) {
