@@ -1,9 +1,15 @@
 package api
 
-import "fmt"
+import (
+	"crypto/tls"
+	"net"
+)
 
-type HandlerFunc func(*Ctx) error
-
-func ToDoHandler(c *Ctx) error {
-	return c.Status(501).SendString(fmt.Sprintf("%s - %s Not Implemented", c.Method(), c.Path()))
+type Config struct {
+	Address   string
+	Listener  net.Listener
+	TLSConfig *tls.Config
+	Recover   bool
 }
+
+type Handler func(c Context) error

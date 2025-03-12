@@ -1,8 +1,12 @@
 package main
 
 import (
+	"crypto/tls"
+	"time"
+
 	"github.com/loveuer/uzone"
 	"github.com/loveuer/uzone/example/full_usage/controller"
+	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/cache"
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/es"
@@ -40,6 +44,12 @@ func main() {
 	}))
 
 	app.With(uzone.InitAsyncFn(func(u interfaces.Uzone) {
+		time.Sleep(10 * time.Second)
+		err := u.UseMQ().Publish(u.UseCtx(), "uzone", amqp.Publishing{Body: []byte("hello uzone")})
+		u.UseLogger().Info("publish mq msg: %v", err)
+	}))
+
+	app.With(uzone.InitAsyncFn(func(u interfaces.Uzone) {
 		ch, err := u.UseMQ().Consume(u.UseCtx(), "uzone")
 		if err != nil {
 			u.UseLogger().Error(err.Error())
@@ -52,7 +62,11 @@ func main() {
 		}
 	}))
 
-	app.With(uzone.InitApi(controller.New()))
+	app.With(uzone.InitApi(
+		controller.New(),
+		api.SetListenAddress("0.0.0.0:8080"),
+		api.SetTLS(&tls.Config{}),
+	))
 
 	app.RunSignal()
 }

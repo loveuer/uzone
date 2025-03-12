@@ -1,12 +1,16 @@
 package main
 
 import (
-	"github.com/loveuer/uzone"
-	"github.com/loveuer/uzone/pkg/api"
-	"github.com/loveuer/uzone/pkg/db"
-	"github.com/loveuer/uzone/pkg/interfaces"
 	"net/http"
 	"time"
+
+	"github.com/loveuer/uzone"
+	"github.com/loveuer/uzone/pkg/api"
+
+	api_nf "github.com/loveuer/uzone/pkg/api.nf"
+	// api_fiber "github.com/loveuer/uzone/pkg/api.fiber"
+	"github.com/loveuer/uzone/pkg/db"
+	"github.com/loveuer/uzone/pkg/interfaces"
 )
 
 type Record struct {
@@ -20,9 +24,10 @@ func main() {
 
 	app.With(uzone.InitCache())
 	app.With(uzone.InitDB(db.WithAutoMigrate(&Record{})))
-	app.With(uzone.InitES())
-	app.With(uzone.InitMQ())
-	app.With(uzone.InitApi(api.New()))
+	//app.With(uzone.InitES())
+	//app.With(uzone.InitMQ())
+	// app.With(uzone.InitApi(api_fiber.New()))
+	app.With(uzone.InitApi(api_nf.New()))
 
 	app.With(uzone.InitFn(func(u interfaces.Uzone) {
 		u.UseLogger().Debug("[init] create init record")
@@ -34,7 +39,7 @@ func main() {
 		u.UseLogger().Info("async: run!!!")
 	}))
 
-	var ch = make(chan func(u interfaces.Uzone) error)
+	ch := make(chan func(u interfaces.Uzone) error)
 	app.With(uzone.InitTaskChan(ch))
 	go func() {
 		for {
@@ -46,13 +51,13 @@ func main() {
 		}
 	}()
 
-	app.GET("/api/available", func(c *api.Ctx) error {
+	app.GET("/api/available", func(c api.Context) error {
 		c.UseLogger().With("module", "example").Warn("hello world")
 		time.Sleep(500 * time.Millisecond)
 		return c.Status(500).SendString("hello world")
 	})
 
-	app.POST("/api/record/create", func(c *api.Ctx) error {
+	app.POST("/api/record/create", func(c api.Context) error {
 		var (
 			err error
 			req = new(Record)

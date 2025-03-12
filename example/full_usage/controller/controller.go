@@ -1,15 +1,17 @@
 package controller
 
 import (
-	"github.com/loveuer/uzone/pkg/api"
 	"net/http"
 	"time"
+
+	"github.com/loveuer/uzone/pkg/api"
+	api_nf "github.com/loveuer/uzone/pkg/api.nf"
 )
 
-func New() *api.App {
-	app := api.New()
+func New() api.Engine {
+	app := api_nf.New()
 
-	app.GET("/api/available", func(c *api.Ctx) error {
+	app.GET("/api/available", func(c api.Context) error {
 		c.UseLogger().Info("hello world")
 		return c.Status(http.StatusOK).JSON(map[string]any{"ok": true, "now": time.Now()})
 	})

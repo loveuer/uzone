@@ -11,16 +11,19 @@ import (
 )
 
 func (u *uzone) startAPI(ctx context.Context) {
-	address := property.Listen.Http
-	if address == "" {
-		address = u.api.config.Address
-	}
+	_, cfg := u.api.GetUZone()
 
-	fmt.Printf("Uzone | api listen at %s\n", address)
-	go u.api.engine.Run(address)
+	fmt.Printf("Uzone | api listen at %s\n", cfg.Address)
+
+	go func() {
+		if err := u.api.Run(u.UseCtx()); err != nil {
+			u.UseLogger().Panic("start api failed, err = %v", err)
+		}
+	}()
+
 	go func() {
 		<-ctx.Done()
-		u.api.engine.Shutdown(tool.Timeout(2))
+		_ = u.api.Shutdown(tool.Timeout(2))
 	}()
 }
 

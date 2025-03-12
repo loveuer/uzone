@@ -1,11 +1,10 @@
 package uzone
 
 import (
-	"crypto/tls"
+	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/log"
 	"github.com/loveuer/uzone/pkg/mq"
 
-	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/cache"
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/es"
@@ -58,27 +57,23 @@ func InitMQ(opts ...mq.OptionFn) module {
 	}
 }
 
-type ApiConfig struct {
-	Address   string
-	TLSConfig *tls.Config
-}
+func InitApi(engine api.Engine, opts ...api.OptionFn) module {
+	address := "localhost:8080"
 
-func InitApi(api *api.App, cfgs ...ApiConfig) module {
-	cfg := ApiConfig{}
-	if len(cfgs) > 0 {
-		cfg = cfgs[0]
+	if property.Listen.Http != "" {
+		address = property.Listen.Http
 	}
 
-	if cfg.Address == "" {
-		cfg.Address = "localhost:8080"
+	engine.SetAddress(address)
+	engine.SetRecover(true)
+
+	for _, fn := range opts {
+		fn(engine)
 	}
 
 	return func(u *uzone) {
-		api.Uzone = u
-		u.api = &uzoneApi{
-			engine: api,
-			config: cfg,
-		}
+		engine.SetUZone(u)
+		u.api = engine
 	}
 }
 
