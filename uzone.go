@@ -2,12 +2,12 @@ package uzone
 
 import (
 	"context"
+	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/es"
 	"github.com/loveuer/uzone/pkg/mq"
 	"sync"
 
-	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/cache"
 	"github.com/loveuer/uzone/pkg/interfaces"
 	"github.com/loveuer/uzone/pkg/log"
@@ -21,11 +21,6 @@ const Banner = `
 
 `
 
-type uzoneApi struct {
-	engine *api.App
-	config ApiConfig
-}
-
 type uzone struct {
 	debug   bool
 	ctx     context.Context
@@ -33,7 +28,7 @@ type uzone struct {
 	db      *db.Client
 	cache   *cache.Client
 	es      *es.Client
-	api     *uzoneApi
+	api     api.Engine
 	mq      *mq.Client
 	initFns struct {
 		_sync  []func(interfaces.Uzone)

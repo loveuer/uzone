@@ -1,12 +1,12 @@
 package controller
 
 import (
-	"github.com/loveuer/uzone/pkg/api"
+	"github.com/loveuer/uzone/pkg/api.nf"
 	"net/http"
 	"time"
 )
 
-func kvCreate(c *api.Ctx) error {
+func kvCreate(c *api_nf.Ctx) error {
 	type Req struct {
 		Key string `json:"key"`
 		Val string `json:"val"`
@@ -34,7 +34,7 @@ func kvCreate(c *api.Ctx) error {
 	return c.JSON(req)
 }
 
-func kvGet(c *api.Ctx) error {
+func kvGet(c *api_nf.Ctx) error {
 	type Req struct {
 		Key string `json:"key" query:"key"`
 		Val string `json:"val"`
