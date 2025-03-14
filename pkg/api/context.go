@@ -20,22 +20,11 @@ type Context interface {
 	Body() []byte
 	SetContext(ctx context.Context)
 	Cookies(key string, defaultValue ...string) string
-	//Download(file string, filename ...string) error
 	//Request() *fasthttp.Request
 	//Response() *fasthttp.Response
 	FormValue(key string, defaultValue ...string) string
-	//Fresh() bool
-	//Host() string
-	//Hostname() string
-	//Port() string
-	//IPs() []string
-	//Is(extension string) bool
 	JSON(data any) error
-	//CBOR(data any, ctype ...string) error
-	//JSONP(data any, callback ...string) error
 	//XML(data any) error
-	//Links(link ...string)
-	//Location(path string)
 	Method(override ...string) string
 	//ClientHelloInfo() *tls.ClientHelloInfo
 	Path(override ...string) string
@@ -44,7 +33,6 @@ type Context interface {
 	Query(key string, defaultValue ...string) string
 	Queries() map[string]string
 	SaveFile(fileheader *multipart.FileHeader, path string) error
-	//Secure() bool
 	SendStatus(status int) error
 	SendString(body string) error
 	SendStream(stream io.Reader, size ...int) error
@@ -52,10 +40,8 @@ type Context interface {
 	Status(status int) Context
 	Writef(f string, a ...any) (int, error)
 	WriteString(s string) (int, error)
-	//XHR() bool
-	//IsProxyTrusted() bool
-	//IsFromLocal() bool
 	Drop() error
+	Redirect(status int, location string) error
 
 	UseZone() interfaces.Uzone
 	UseLogger() *log.UzoneLogger

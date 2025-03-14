@@ -21,6 +21,10 @@ type Ctx struct {
 	zone interfaces.Uzone
 }
 
+func (c *Ctx) Redirect(status int, path string) error {
+	return c.ctx.Redirect().Status(status).To(path)
+}
+
 func (c *Ctx) Body() []byte {
 	return c.ctx.Body()
 }
