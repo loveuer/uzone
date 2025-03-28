@@ -1,14 +1,13 @@
 package main
 
 import (
+	api_fiber "github.com/loveuer/uzone/pkg/api.fiber"
 	"net/http"
 	"time"
 
 	"github.com/loveuer/uzone"
 	"github.com/loveuer/uzone/pkg/api"
 
-	api_nf "github.com/loveuer/uzone/pkg/api.nf"
-	// api_fiber "github.com/loveuer/uzone/pkg/api.fiber"
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/interfaces"
 )
@@ -26,8 +25,8 @@ func main() {
 	app.With(uzone.InitDB(db.WithAutoMigrate(&Record{})))
 	//app.With(uzone.InitES())
 	//app.With(uzone.InitMQ())
-	// app.With(uzone.InitApi(api_fiber.New()))
-	app.With(uzone.InitApi(api_nf.New()))
+	app.With(uzone.InitApi(api_fiber.New()))
+	//app.With(uzone.InitApi(api_nf.New()))
 
 	app.With(uzone.InitFn(func(u interfaces.Uzone) {
 		u.UseLogger().Debug("[init] create init record")
@@ -73,6 +72,13 @@ func main() {
 
 		return c.JSON(req)
 	})
+
+	{
+		ag := app.ApiGroup("/nice")
+		ag.GET("/meet", func(c api.Context) error {
+			return nil
+		})
+	}
 
 	app.RunSignal()
 }

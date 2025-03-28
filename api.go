@@ -7,6 +7,10 @@ import (
 
 func (u *uzone) API() api.Engine { return u.api }
 
+func (u *uzone) ApiGroup(path string, handlers ...api.Handler) api.ApiGroup {
+	return u.api.Group(path, handlers...)
+}
+
 func (u *uzone) GET(path string, handlers ...api.Handler) {
 	u.HandleAPI(http.MethodGet, path, handlers...)
 }

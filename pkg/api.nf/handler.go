@@ -12,8 +12,8 @@ type Handler struct {
 	fn nf.HandlerFunc
 }
 
-func NewHandlers(zone interfaces.Uzone, handlers ...api.Handler) []nf.HandlerFunc {
-	if len(handlers) == 0 {
+func newHandlers(zone interfaces.Uzone, must bool, handlers ...api.Handler) []nf.HandlerFunc {
+	if must && len(handlers) == 0 {
 		log.New().Panic("at least one handler required")
 	}
 

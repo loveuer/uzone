@@ -12,8 +12,8 @@ type Handler struct {
 	fn fiber.Handler
 }
 
-func NewHandlers(zone interfaces.Uzone, handlers ...api.Handler) []fiber.Handler {
-	if len(handlers) == 0 {
+func newHandlers(zone interfaces.Uzone, must bool, handlers ...api.Handler) []fiber.Handler {
+	if must && len(handlers) == 0 {
 		log.New().Panic("at least one handler required")
 	}
 

@@ -43,53 +43,53 @@ func (e *Engine) GetUZone() (interfaces.Uzone, api.Config) {
 }
 
 func (e *Engine) Group(path string, handlers ...api.Handler) api.ApiGroup {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, false, handlers...)
 	group := e.App.Group(path, hs...)
 	return NewGroup(e.zone, group)
 }
 
 func (e *Engine) GET(path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Get(path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) POST(path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Post(path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) PUT(path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Put(path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) DELETE(path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Delete(path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) HEAD(path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Head(path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) PATCH(path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Patch(path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) OPTIONS(path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Options(path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) Handle(method, path string, handlers ...api.Handler) {
-	hs := NewHandlers(e.zone, handlers...)
+	hs := newHandlers(e.zone, true, handlers...)
 	e.App.Add([]string{method}, path, hs[0], hs[1:]...)
 }
 
 func (e *Engine) Use(handlers ...api.Handler) {
-	for _, item := range NewHandlers(e.zone, handlers...) {
+	for _, item := range newHandlers(e.zone, true, handlers...) {
 		e.App.Use(item)
 	}
 }
