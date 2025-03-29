@@ -25,7 +25,7 @@ func main() {
 	app.With(uzone.InitDB(db.WithAutoMigrate(&Record{})))
 	//app.With(uzone.InitES())
 	//app.With(uzone.InitMQ())
-	app.With(uzone.InitApi(api_fiber.New()))
+	app.With(uzone.InitApi(api_fiber.New(app)))
 	//app.With(uzone.InitApi(api_nf.New()))
 
 	app.With(uzone.InitFn(func(u interfaces.Uzone) {

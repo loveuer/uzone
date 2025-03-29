@@ -63,7 +63,7 @@ func main() {
 	}))
 
 	app.With(uzone.InitApi(
-		controller.New(),
+		controller.New(app),
 		api.SetListenAddress("0.0.0.0:8080"),
 		api.SetTLS(&tls.Config{}),
 	))
