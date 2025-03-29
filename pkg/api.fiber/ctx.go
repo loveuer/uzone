@@ -7,19 +7,19 @@ import (
 	"mime/multipart"
 
 	"github.com/gofiber/fiber/v3"
-	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/cache"
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/es"
 	"github.com/loveuer/uzone/pkg/interfaces"
 	"github.com/loveuer/uzone/pkg/log"
 	"github.com/loveuer/uzone/pkg/mq"
+	"github.com/loveuer/uzone/pkg/uapi"
 	"gorm.io/gorm"
 )
 
 type Ctx struct {
 	ctx    fiber.Ctx
-	engine api.Engine
+	engine uapi.Engine
 }
 
 func (c *Ctx) ReqAndResp() (any, any) {
@@ -98,7 +98,7 @@ func (c *Ctx) SendStreamWriter(streamWriter func(*bufio.Writer)) error {
 	return c.ctx.SendStreamWriter(streamWriter)
 }
 
-func (c *Ctx) Status(status int) api.Context {
+func (c *Ctx) Status(status int) uapi.Context {
 	c.ctx = c.ctx.Status(status)
 	return c
 }
@@ -192,6 +192,6 @@ func (c *Ctx) QueryParser(data any) error {
 	return c.ctx.Bind().Query(data)
 }
 
-func NewCtx(c fiber.Ctx, engine api.Engine) api.Context {
+func NewCtx(c fiber.Ctx, engine uapi.Engine) uapi.Context {
 	return &Ctx{ctx: c, engine: engine}
 }

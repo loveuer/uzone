@@ -2,10 +2,10 @@ package api_nf
 
 import (
 	"github.com/loveuer/nf"
-	"github.com/loveuer/uzone/pkg/api"
+	"github.com/loveuer/uzone/pkg/uapi"
 )
 
-func New() api.Engine {
+func New() uapi.Engine {
 	app := nf.New(nf.Config{
 		DisableMessagePrint: true,
 		BodyLimit:           0,
@@ -13,5 +13,5 @@ func New() api.Engine {
 		DisableLogger:       true,
 	})
 
-	return &Engine{App: app, cfg: api.Config{}}
+	return &Engine{App: app, cfg: uapi.Config{}}
 }

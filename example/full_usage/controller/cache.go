@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/loveuer/uzone/pkg/api"
+	"github.com/loveuer/uzone/pkg/uapi"
 )
 
-func kvCreate(c api.Context) error {
+func kvCreate(c uapi.Context) error {
 	type Req struct {
 		Key string `json:"key"`
 		Val string `json:"val"`
@@ -35,7 +35,7 @@ func kvCreate(c api.Context) error {
 	return c.JSON(req)
 }
 
-func kvGet(c api.Context) error {
+func kvGet(c uapi.Context) error {
 	type Req struct {
 		Key string `json:"key" query:"key"`
 		Val string `json:"val"`

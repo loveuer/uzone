@@ -11,16 +11,16 @@ import (
 	"net"
 
 	"github.com/gofiber/fiber/v3"
-	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/interfaces"
 	"github.com/loveuer/uzone/pkg/tool"
+	"github.com/loveuer/uzone/pkg/uapi"
 	"github.com/samber/lo"
 )
 
 type Engine struct {
 	*fiber.App
 	zone interfaces.Uzone
-	cfg  api.Config
+	cfg  uapi.Config
 }
 
 func (e *Engine) SetAddress(address string) {
@@ -43,7 +43,7 @@ func (e *Engine) SetUZone(u interfaces.Uzone) {
 	e.zone = u
 }
 
-func (e *Engine) GetUZone() (interfaces.Uzone, api.Config) {
+func (e *Engine) GetUZone() (interfaces.Uzone, uapi.Config) {
 	return e.zone, e.cfg
 }
 
@@ -63,53 +63,53 @@ func (e *Engine) UseMQ() *mq.Client {
 	return e.zone.UseMQ()
 }
 
-func (e *Engine) Group(path string, handlers ...api.Handler) api.ApiGroup {
+func (e *Engine) Group(path string, handlers ...uapi.Handler) uapi.ApiGroup {
 	hs := newHandlers(e, false, handlers...)
 	group := e.App.Group(path, hs...)
 	return NewGroup(e, group)
 }
 
-func (e *Engine) GET(path string, handlers ...api.Handler) {
+func (e *Engine) GET(path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Get(path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) POST(path string, handlers ...api.Handler) {
+func (e *Engine) POST(path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Post(path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) PUT(path string, handlers ...api.Handler) {
+func (e *Engine) PUT(path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Put(path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) DELETE(path string, handlers ...api.Handler) {
+func (e *Engine) DELETE(path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Delete(path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) HEAD(path string, handlers ...api.Handler) {
+func (e *Engine) HEAD(path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Head(path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) PATCH(path string, handlers ...api.Handler) {
+func (e *Engine) PATCH(path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Patch(path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) OPTIONS(path string, handlers ...api.Handler) {
+func (e *Engine) OPTIONS(path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Options(path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) Handle(method, path string, handlers ...api.Handler) {
+func (e *Engine) Handle(method, path string, handlers ...uapi.Handler) {
 	hs := newHandlers(e, true, handlers...)
 	e.App.Add([]string{method}, path, hs[0], hs[1:]...)
 }
 
-func (e *Engine) Use(handlers ...api.Handler) {
+func (e *Engine) Use(handlers ...uapi.Handler) {
 	for _, item := range newHandlers(e, true, handlers...) {
 		e.App.Use(item)
 	}
@@ -123,8 +123,8 @@ func (e *Engine) Run(ctx context.Context) error {
 			tlsConfig = e.cfg.TLSConfig
 		},
 		BeforeServeFunc: func(app *fiber.App) error {
-			var rs api.Routes = lo.Map(app.GetRoutes(true), func(item fiber.Route, idx int) api.Route {
-				return api.Route{
+			var rs uapi.Routes = lo.Map(app.GetRoutes(true), func(item fiber.Route, idx int) uapi.Route {
+				return uapi.Route{
 					Method:      item.Method,
 					Path:        item.Path,
 					HandlerName: tool.GetFunctionName(item.Handlers[len(item.Handlers)-1]),

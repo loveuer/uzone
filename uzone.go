@@ -2,10 +2,10 @@ package uzone
 
 import (
 	"context"
-	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/es"
 	"github.com/loveuer/uzone/pkg/mq"
+	"github.com/loveuer/uzone/pkg/uapi"
 	"sync"
 
 	"github.com/loveuer/uzone/pkg/cache"
@@ -28,7 +28,7 @@ type uzone struct {
 	db      *db.Client
 	cache   *cache.Client
 	es      *es.Client
-	api     api.Engine
+	api     uapi.Engine
 	mq      *mq.Client
 	initFns struct {
 		_sync  []func(interfaces.Uzone)

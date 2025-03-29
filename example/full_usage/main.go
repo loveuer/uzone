@@ -6,12 +6,12 @@ import (
 
 	"github.com/loveuer/uzone"
 	"github.com/loveuer/uzone/example/full_usage/controller"
-	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/cache"
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/es"
 	"github.com/loveuer/uzone/pkg/interfaces"
 	"github.com/loveuer/uzone/pkg/mq"
+	"github.com/loveuer/uzone/pkg/uapi"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -64,8 +64,8 @@ func main() {
 
 	app.With(uzone.InitApi(
 		controller.New(),
-		api.SetListenAddress("0.0.0.0:8080"),
-		api.SetTLS(&tls.Config{}),
+		uapi.SetListenAddress("0.0.0.0:8080"),
+		uapi.SetTLS(&tls.Config{}),
 	))
 
 	app.RunSignal()

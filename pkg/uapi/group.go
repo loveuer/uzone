@@ -1,4 +1,4 @@
-package api
+package uapi
 
 type ApiGroup interface {
 	Group(path string, handlers ...Handler) ApiGroup

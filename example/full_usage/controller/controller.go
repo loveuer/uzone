@@ -4,14 +4,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/loveuer/uzone/pkg/api"
 	api_nf "github.com/loveuer/uzone/pkg/api.nf"
+	"github.com/loveuer/uzone/pkg/uapi"
 )
 
-func New() api.Engine {
+func New() uapi.Engine {
 	app := api_nf.New()
 
-	app.GET("/api/available", func(c api.Context) error {
+	app.GET("/api/available", func(c uapi.Context) error {
 		c.UseLogger().Info("hello world")
 		return c.Status(http.StatusOK).JSON(map[string]any{"ok": true, "now": time.Now()})
 	})

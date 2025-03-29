@@ -4,12 +4,12 @@ import (
 	"context"
 	"testing"
 
-	"github.com/loveuer/uzone/pkg/api"
+	"github.com/loveuer/uzone/pkg/uapi"
 )
 
 func TestNew(t *testing.T) {
 	app := New()
-	app.GET("/api/hello", func(c api.Context) error {
+	app.GET("/api/hello", func(c uapi.Context) error {
 		return c.SendString("world")
 	})
 

@@ -1,9 +1,9 @@
 package uzone
 
 import (
-	"github.com/loveuer/uzone/pkg/api"
 	"github.com/loveuer/uzone/pkg/log"
 	"github.com/loveuer/uzone/pkg/mq"
+	"github.com/loveuer/uzone/pkg/uapi"
 
 	"github.com/loveuer/uzone/pkg/cache"
 	"github.com/loveuer/uzone/pkg/db"
@@ -57,7 +57,7 @@ func InitMQ(opts ...mq.OptionFn) module {
 	}
 }
 
-func InitApi(engine api.Engine, opts ...api.OptionFn) module {
+func InitApi(engine uapi.Engine, opts ...uapi.OptionFn) module {
 	address := "localhost:8080"
 
 	if property.Listen.Http != "" {

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/loveuer/uzone"
-	"github.com/loveuer/uzone/pkg/api"
+	"github.com/loveuer/uzone/pkg/uapi"
 
 	"github.com/loveuer/uzone/pkg/db"
 	"github.com/loveuer/uzone/pkg/interfaces"
@@ -50,13 +50,13 @@ func main() {
 		}
 	}()
 
-	app.GET("/api/available", func(c api.Context) error {
+	app.GET("/api/available", func(c uapi.Context) error {
 		c.UseLogger().With("module", "example").Warn("hello world")
 		time.Sleep(500 * time.Millisecond)
 		return c.Status(500).SendString("hello world")
 	})
 
-	app.POST("/api/record/create", func(c api.Context) error {
+	app.POST("/api/record/create", func(c uapi.Context) error {
 		var (
 			err error
 			req = new(Record)
@@ -75,7 +75,7 @@ func main() {
 
 	{
 		ag := app.ApiGroup("/nice")
-		ag.GET("/meet", func(c api.Context) error {
+		ag.GET("/meet", func(c uapi.Context) error {
 			return nil
 		})
 	}

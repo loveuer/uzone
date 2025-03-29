@@ -2,10 +2,10 @@ package api_fiber
 
 import (
 	"github.com/gofiber/fiber/v3"
-	"github.com/loveuer/uzone/pkg/api"
+	"github.com/loveuer/uzone/pkg/uapi"
 )
 
-func New() api.Engine {
+func New() uapi.Engine {
 	app := fiber.New(fiber.Config{
 		ServerHeader:    "",
 		BodyLimit:       0,
@@ -20,5 +20,5 @@ func New() api.Engine {
 		StructValidator: nil,
 	})
 
-	return &Engine{App: app, cfg: api.Config{}}
+	return &Engine{App: app, cfg: uapi.Config{}}
 }
