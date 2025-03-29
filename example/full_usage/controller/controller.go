@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"github.com/loveuer/uzone/pkg/interfaces"
 	"net/http"
 	"time"
 
@@ -9,8 +8,8 @@ import (
 	api_nf "github.com/loveuer/uzone/pkg/api.nf"
 )
 
-func New(uzone interfaces.Uzone) api.Engine {
-	app := api_nf.New(uzone)
+func New() api.Engine {
+	app := api_nf.New()
 
 	app.GET("/api/available", func(c api.Context) error {
 		c.UseLogger().Info("hello world")

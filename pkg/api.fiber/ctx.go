@@ -18,8 +18,8 @@ import (
 )
 
 type Ctx struct {
-	ctx  fiber.Ctx
-	zone interfaces.Uzone
+	ctx    fiber.Ctx
+	engine api.Engine
 }
 
 func (c *Ctx) ReqAndResp() (any, any) {
@@ -144,27 +144,28 @@ func (c *Ctx) Write(bytes []byte) (int, error) {
 }
 
 func (c *Ctx) UseLogger() *log.UzoneLogger {
-	return c.zone.UseLogger()
+	return c.engine.UseLogger()
 }
 
 func (c *Ctx) UseDB(opts ...db.SessionOpt) *gorm.DB {
-	return c.zone.UseDB(opts...)
+	return c.engine.UseDB()
 }
 
 func (c *Ctx) UseCache() cache.Cache {
-	return c.zone.UseCache()
+	return c.engine.UseCache()
 }
 
 func (c *Ctx) UseES() *es.Client {
-	return c.zone.UseES()
+	return c.engine.UseES()
 }
 
 func (c *Ctx) UseMQ() *mq.Client {
-	return c.zone.UseMQ()
+	return c.engine.UseMQ()
 }
 
 func (c *Ctx) UseZone() interfaces.Uzone {
-	return c.zone
+	zone, _ := c.engine.GetUZone()
+	return zone
 }
 
 func (c *Ctx) BodyParser(out any) error {
@@ -191,6 +192,6 @@ func (c *Ctx) QueryParser(data any) error {
 	return c.ctx.Bind().Query(data)
 }
 
-func NewCtx(c fiber.Ctx, zone interfaces.Uzone) api.Context {
-	return &Ctx{ctx: c, zone: zone}
+func NewCtx(c fiber.Ctx, engine api.Engine) api.Context {
+	return &Ctx{ctx: c, engine: engine}
 }

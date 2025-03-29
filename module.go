@@ -72,6 +72,7 @@ func InitApi(engine api.Engine, opts ...api.OptionFn) module {
 	}
 
 	return func(u *uzone) {
+		engine.SetUZone(u)
 		u.api = engine
 	}
 }
